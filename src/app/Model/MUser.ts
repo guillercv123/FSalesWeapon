@@ -7,5 +7,5 @@ export interface IUser{
 
 export interface IUserWithToken{
    usuario:IUser;
-   jwt:string;
+   jwtToken:string;
 }
