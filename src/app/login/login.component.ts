@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {IUser} from '../Model/MUser';
 import {UserService} from '../services/user.service';
 import {Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
+import {Store} from 'redux';
+import {AppState} from '../store/app.reducer';
 
 
 @Component({
@@ -11,16 +13,18 @@ import {ToastrService} from 'ngx-toastr';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   loginForm: FormGroup;
   UserData: IUser;
 
   constructor(
     private userService: UserService,
+    private store: Store<AppState>,
     private route: Router,
     private toast: ToastrService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
@@ -28,6 +32,10 @@ export class LoginComponent implements OnInit {
       clave: new FormControl(''),
     });
   }
+
+  ngOnDestroy() {
+  }
+
   onSubmitData() {
 
     this.UserData = {
@@ -39,7 +47,7 @@ export class LoginComponent implements OnInit {
         data => {
             if (data) {
               localStorage.setItem('token', data.jwtToken);
-              this.route.navigate(['home/dashboard']);
+              this.route.navigate(['home/ventas']);
             }
          },
         err => {

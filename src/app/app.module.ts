@@ -16,6 +16,12 @@ import { AppRoutes } from './app.routing';
 import { AppComponent } from './app.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { LoginComponent } from './login/login.component';
+import {StoreModule} from '@ngrx/store';
+import {appReduces} from './store/app.reducer';
+import {EffectsModule} from '@ngrx/effects';
+import {ProductEffect} from './store/effects/product.effect';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {environment} from '../environments/environment';
 
 
 @NgModule({
@@ -25,6 +31,12 @@ import { LoginComponent } from './login/login.component';
     LoginComponent
   ],
   imports: [
+    StoreModule.forRoot(appReduces),
+    EffectsModule.forRoot([ProductEffect]),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production
+    }),
     BrowserAnimationsModule,
     HttpClientModule,
     BsDatepickerModule.forRoot(),
